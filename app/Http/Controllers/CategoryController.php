@@ -12,7 +12,22 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return  Category::all();
+        try {
+            // 1. Fetch data from the database
+            $cat = Category::all();
+            // 2. ✅ FIX 2: Return a successful JSON response
+            // Laravel's json() function automatically handles the 200 OK status.
+            return response()->json([
+                'data' => $cat,
+                'message' => 'Roles fetched successfully'
+            ], 200);
+        } catch (\Exception $e) {
+            // 3. Fallback for server error (500 Internal Server Error)
+            return response()->json([
+                'message' => 'Failed to fetch roles.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
