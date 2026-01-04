@@ -14,15 +14,12 @@ class CategoryController extends Controller
     {
         try {
             // 1. Fetch data from the database
-            $cat = Category::all();
-            // 2. ✅ FIX 2: Return a successful JSON response
-            // Laravel's json() function automatically handles the 200 OK status.
+            $cat = Category::all(); 
             return response()->json([
                 'data' => $cat,
                 'message' => 'Roles fetched successfully'
             ], 200);
         } catch (\Exception $e) {
-            // 3. Fallback for server error (500 Internal Server Error)
             return response()->json([
                 'message' => 'Failed to fetch roles.',
                 'error' => $e->getMessage()
@@ -35,19 +32,20 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+            $validation = $request->validate([
+            'name'=>'required|string',
+            'status'=>'required|boolean',
+            'description'=>'nullable|string',
+            'parent_id'=>'nullable|string'
+            ]);
         // $request->input("key_name")
         // $request->input() // get all json data
-        $cat = new Category(); //  varible object
-        $cat->name = $request->input("name");
-        $cat->description = $request->input("description");
-        $cat->status = $request->input("status");
-        $cat->parent_id = $request->input("parent_id");
-
-        $cat->save();
-
-        // cat::created([
-
-        // ]);
+        $cat = Category::create($validation); //  varible object
+        // $cat->name = $request->input("name");
+        // $cat->description = $request->input("description");
+        // $cat->status = $request->input("status");
+        // $cat->parent_id = $request->input("parent_id");
+        // $cat->save(); 
         return  [
             "data" => $cat,
             "message" => "insert successfully"
@@ -74,11 +72,14 @@ class CategoryController extends Controller
                 "message" => "Data not found!"
             ];
         } else {
-            $cat->name = $request->input("name");
-            $cat->description = $request->input("description");
-            $cat->status = $request->input("status");
-            $cat->parent_id = $request->input("parent_id");
-            $cat->update();
+            $validation = $request->validate([
+            'name'=>'required|string',
+            'status'=>'required|boolean',
+            'description'=>'nullable|string',
+            'parent_id'=>'nullable|string'
+            ]);
+           
+            $cat->update($validation);
             return [
                 "data" => $cat,
                 "message" => "insert successfully"

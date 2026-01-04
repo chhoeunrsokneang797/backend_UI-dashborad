@@ -39,18 +39,24 @@ class RoleController extends Controller
     {
         // $request->input("key_name")
         // $request->input() // get all json data
-        $role = new Role(); //  varible object
-        $role->name = $request->input("name");
-        $role->code = $request->input("code");
-        $role->description = $request->input("description");
-        $role->status = $request->input("status");
-        $role->save();
 
-        // Role::created([
+        // $role = new Role(); //  varible object
+        // $role->name = $request->input("name");
+        // $role->code = $request->input("code");
+        // $role->description = $request->input("description");
+        // $role->status = $request->input("status");
+        // $role->save();
 
-        // ]);
+        $validate = $request->validate([
+            'name' => 'required|string|max:255',
+            'code' => 'required|string',
+            'description' => 'required|string',
+            'status' => 'required|boolean',
+        ]);
+
+        Role::create($validate);
         return  [
-            "data" => $role,
+            // "data" => $role,
             "message" => "insert successfully"
         ];
     }
