@@ -47,6 +47,11 @@ class User extends Authenticatable implements JWTSubject
         'remember_token',
     ];
 
+    // One to One relatioship with Profile
+    public function profile(){
+        return $this->hasOne(Profile::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *

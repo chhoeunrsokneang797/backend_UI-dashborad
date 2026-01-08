@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BrandController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
@@ -24,7 +25,10 @@ Route::get('/user', function (Request $request) {
     // Route::resource('role', RoleController::class);
     Route::apiResource("categories", CategoryController::class);
     Route::apiResource("province", ProvinceController::class);
+    Route::apiResource("brands", BrandController::class);
 // });
 // Auth
+Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
